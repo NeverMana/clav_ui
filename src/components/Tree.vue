@@ -37,7 +37,7 @@
 
 <script>
 export default {
-    name: 'Listagem',
+    name: 'Tree',
     props: ['contentTree', 'path'],
     data () {
         return{
