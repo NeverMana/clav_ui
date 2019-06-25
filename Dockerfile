@@ -1,15 +1,9 @@
-# build stage
-FROM node:lts-alpine as build-stage
+FROM node:10
+COPY ./ /app
 WORKDIR /app
-COPY package*.json ./
-RUN npm install
-COPY . .
-RUN npm run build
+RUN npm install && npm audit fix && npm run build
 
-# production stage
-FROM nginx:stable-alpine as production-stage
+FROM nginx
 RUN mkdir /app
-COPY --from=build-stage /app /app/dist
+COPY --from=0 /app/dist /app
 COPY nginx.conf /etc/nginx/nginx.conf
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
